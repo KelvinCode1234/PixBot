@@ -1,0 +1,238 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Poppins;
+}
+
+body {
+    background-color: #E3F2FD;
+}
+
+.PixBot-toggler {
+    position: fixed;
+    right: 40px;
+    bottom: 20px;
+    height: 35px;
+    width: 50px;
+    color: #fff;
+    border: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+    font-size: x-large;
+    background: #74C0FC;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.PixBot {
+    display: none; 
+}
+
+.PixBot.show-PixBot {
+    display: block; 
+}
+
+.PixBot-toggler i {
+    font-size: 1.5rem;
+    transition: opacity 0.3s ease;
+}
+
+.PixBot-toggler i:first-child {
+    display: block; /* Initially show fa-comment */
+}
+
+.PixBot-toggler i:last-child {
+    display: none; /* Initially hide fa-xmark */
+}
+
+.show-PixBot .PixBot-toggler i:first-child {
+    display: none; /* Hide fa-comment when PixBot is shown */
+}
+
+.show-PixBot .PixBot-toggler i:last-child {
+    display: block; /* Show fa-xmark when PixBot is shown */
+}
+
+.PixBot {
+    position: fixed;
+    right: 40px;
+    bottom: 70px;
+    width: 430px;
+    transform: scale(0.5);
+    opacity: 0;
+    pointer-events: none;
+    overflow: hidden;
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 0 128px 0 rgba(0, 0, 0, 0.1),
+                0 32px 64px -48px rgba(0, 0, 0, 0.5);
+    transition: all 0.3s ease;
+}
+
+.show-PixBot .PixBot {
+    transform: scale(1);
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.PixBot header {
+    background: #74C0FC;
+    padding: 16px 0;
+    text-align: center;
+    position: relative;
+}
+
+.PixBot header h2 {
+    color: #fff;
+    font-size: 1.4rem;
+}
+
+.PixBot header i {
+    position: absolute;
+    right: 20px;
+    top: 50%;
+    color: #fff;
+    font-size: x-large;
+    display: none;
+    transform: translateY(-50%);
+}
+
+.PixBot .chatbox {
+    height: 470px;
+    overflow-y: auto;
+    padding: 50px 20px;
+}
+
+.chatbox .chat {
+    display: flex;
+}
+
+.chatbox .incoming span {
+    height: 32px;
+    width: 32px;
+    align-self: flex-end;
+    color: #fff;
+    background: #74C0FC;
+    text-align: center;
+    line-height: 32px;
+    border-radius: 5px;
+    margin: 0 10px 7px 0;
+}
+
+.chatbox .outgoing {
+    margin: 20px 0;
+    justify-content: flex-end;
+}
+
+.chatbox .chat p {
+    color: #fff;
+    max-width: 75%;
+    padding: 12px 16px;
+    font-size: 0.95rem;
+    padding: 12px 16px;
+    border-radius: 10px 10px 0 10px;
+    background: #74C0FC;
+}
+
+.chat:last-child {
+    margin-bottom: 50px;
+}
+
+.chatbox .incoming p {
+    color: #000000;
+    background: #f2f2f2;
+    border-radius: 10px 10px 10px 0;
+}
+
+.PixBot .chat-input {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    gap: 5px;
+    background: #fff;
+    padding: 5px 20px;
+    border-top: 1px solid #ccc;
+}
+
+.chat-input textarea {
+    border: none;
+    height: 55px;
+    width: 100%;
+    outline: none;
+    font-size: 0.95rem;
+    resize: none;
+    padding: 16px 15px 16px 0;
+    color: #000000;
+}
+
+.chat-input span {
+    align-self: flex-end;
+    height: 55px;
+    line-height: 55px;
+    color: #74C0FC;
+    font-size: 1.7rem;
+    cursor: pointer;
+    visibility: hidden;
+}
+
+.chat-input textarea:valid ~ span {
+    visibility: visible;
+}
+
+.typing-effect {
+    font-family: Poppins;
+    white-space: nowrap;
+    overflow: hidden;
+    display: inline-block;
+    border-right: 3px solid #74C0FC;
+    width: 0;
+    opacity: 1;
+    animation: typing 2s steps(30, end) forwards, blink-caret 3s step-end 0.5s infinite, fade-in 0s 5s forwards;
+}
+
+@keyframes typing {
+    from { width: 0; }
+    to { width: 50%; }
+}
+
+@keyframes blink-caret {
+    from, to { border-color: transparent; }
+    50% { border-color: #74C0FC; }
+}
+
+@keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@media (max-width: 490px) {
+    .PixBot {
+        right: 0;
+        bottom: 0;
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+    }
+
+    .PixBot-toggler i {
+        font-size: 1.8rem;
+        transition: opacity 0.3s ease;
+    }
+
+    .PixBot .chatbox {
+        height: 90%;
+    }
+
+    @keyframes typing {
+        from { width: 0; }
+        to { width: 65%; }
+    }
+
+    .PixBot header i {
+        display: block;
+    }
+}
