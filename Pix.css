@@ -37,7 +37,7 @@ body {
 
 .PixBot-toggler i {
     font-size: 1.5rem;
-    transition: opacity 0.3s ease;
+    transition: opacity 0.5s ease;
 }
 
 .PixBot-toggler i:first-child {
@@ -191,7 +191,7 @@ body {
     border-right: 3px solid #74C0FC;
     width: 0;
     opacity: 1;
-    animation: typing 2s steps(30, end) forwards, blink-caret 3s step-end 0.5s infinite, fade-in 0s 5s forwards;
+    animation: typing 1.5s steps(30, end) forwards, blink-caret 3s step-end 0.5s infinite, fade-in 0s 5s forwards;
 }
 
 @keyframes typing {

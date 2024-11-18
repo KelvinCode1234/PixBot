@@ -6,14 +6,12 @@ document.addEventListener("DOMContentLoaded", () => {
     const sendButton = document.querySelector(".chat-input span");
     const chatBox = document.querySelector(".chatbox");
 
-    let userName = localStorage.getItem('userName') || null; // Retrieve from local storage if available
+    let userName = localStorage.getItem('userName') || null; 
 
-    // Toggle PixBot visibility when toggler button is clicked
     togglerButton.addEventListener("click", () => {
         PixBotContainer.classList.toggle("show-PixBot");
     });
 
-    // Close PixBot when the close button (X) is clicked
     closeButton.addEventListener("click", () => {
         PixBotContainer.classList.remove("show-PixBot");
     });
@@ -40,23 +38,58 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (!input) return;
 
-        if (input === "what is your name?" || input === "what's your name?") {
+        if (input === "what is your name?" || input === "what's your name?" || input === "what's your name?" || input === "what is your name?" || input === "what's your name") {
             if (!userName) {
                 response.brief = "I'm PixBot. What's your name?";
                 userName = null; 
             } else {
                 response.brief = `Hi ${userName}, I'm PixBot. Nice to chat with you again!`;
             }
-        } else if (!userName && input.startsWith("my name is ")) {
-            userName = input.slice(11).trim();
-            localStorage.setItem('userName', userName);  // Store the name in localStorage
+        } else if (!userName && (input.startsWith("i'm ") || input.startsWith("my name is ") || input.startsWith("i am "))) {
+
+            if (input.startsWith("i'm ")) {
+                userName = input.slice(4).trim();
+            } else if (input.startsWith("my name is ")) {
+                userName = input.slice(11).trim();
+            } else if (input.startsWith("i am ")) {
+                userName = input.slice(5).trim();
+            }
+
+            localStorage.setItem('userName', userName);
             response.brief = `Nice to meet you, ${userName}! How can I help you?`;
         } else if (input === "make it full" || input === "more") {
-            isBrief = false; // Display full info when "make it full" or "more" is typed
-        } else if (input === "hi" || input === "hello" || input === "how are you?") {
+            isBrief = false;
+        } else if (input === "hi" || input === "hello" || input === "how are you?" || input === "hello pixbot" || input === "hello PixBot" || input === "hey") {
             response.brief = "Hello! How can I help you?";
-        } else if (input === "what is a name?" || input === "what is a name") {
-            response = await getTechAnswer("What is a name");
+        } else if (input.includes("add") || input.includes("plus") || input.includes("subtract") || input.includes("multiply") || input.includes("divide")) {
+            try {
+                const mathExpression = input
+                    .replace(/what's|what is|calculate|can you/gi, "")
+                    .replace(/add|plus/gi, "+")
+                    .replace(/subtract|minus/gi, "-")
+                    .replace(/multiply|times/gi, "*")
+                    .replace(/divide|by/gi, "/")
+                    .trim();
+            
+                if (/^[0-9+\-*/().\s]+$/.test(mathExpression)) {
+                    const result = math.evaluate(mathExpression);
+                    response.brief = `The answer is ${result}.`;
+                    response.full = `For your query '${input}', the calculated answer is ${result}.`;
+                } else {
+                    response.brief = "Sorry, I couldn't calculate that. Please provide a proper mathematical query.";
+                }
+            } catch {
+                response.brief = "Sorry, I couldn't calculate that. Please check your input.";
+            }
+            
+        } else if (input.includes("are you a bot") || input.includes("are you an ai")) {
+            const options = [
+                "Yes, I'm PixBot, an AI here to assist you!",
+                "I am an AI, and I'm here to help. Ask me anything!",
+                "Yes, I'm an AI bot. Let me know how I can assist you!"
+            ];
+            const randomResponse = options[Math.floor(Math.random() * options.length)];
+            response.brief = `${randomResponse}`;
         } else {
             try {
                 const result = math.evaluate(input);
@@ -69,6 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         addMessage(isBrief ? response.brief : response.full, "incoming");
     }
+
 
     // Fetch answer from the API
     async function getTechAnswer(query) {
@@ -103,7 +137,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // Listen for "Enter" key press
     chatInput.addEventListener("keydown", (e) => {
         if (e.key === "Enter") {
             e.preventDefault(); 
@@ -115,7 +148,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // Send button click event
     sendButton.addEventListener("click", () => {
         if (chatInput.value.trim() !== "") {
             addMessage(chatInput.value, "outgoing");
